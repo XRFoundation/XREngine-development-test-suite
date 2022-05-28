@@ -8,6 +8,7 @@ import { Quaternion, Vector3 } from 'three'
 import { NetworkId } from '@xrengine/common/src/interfaces/NetworkId'
 
 import { loadGLTFAssetNode } from '@xrengine/engine/tests/util/loadGLTFAssetNode'
+import { createMockNetwork } from '@xrengine/engine/tests/util/createMockNetwork'
 import { AssetLoader } from '@xrengine/engine/src/assets/classes/AssetLoader'
 import { loadDRACODecoder } from '@xrengine/engine/src/assets/loaders/gltf/NodeDracoLoader'
 import { Engine } from '@xrengine/engine/src/ecs/classes/Engine'
@@ -61,10 +62,11 @@ before(async () => {
 describe('avatarFunctions Integration', async () => {
   beforeEach(async () => {
     createEngine()
+    createMockNetwork()
     Engine.instance.publicPath = ''
     await Engine.instance.currentWorld.physics.createScene({ verbose: true })
     AssetLoader.Cache.clear()
-    Engine.instance.userId = Engine.instance.currentWorld.hostId
+    Engine.instance.userId = Engine.instance.currentWorld.worldNetwork.hostId
   })
 
   describe('loadAvatarForEntity', () => {
